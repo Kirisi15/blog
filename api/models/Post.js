@@ -1,4 +1,4 @@
-const mongoose = requre("mongoose")
+const mongoose = require("mongoose")
 
 const PostSchema = new mongoose.Schema(
    {
@@ -7,7 +7,7 @@ const PostSchema = new mongoose.Schema(
             required:true,
             unique:true
         },
-        dece:{
+        desc:{
             type:String,
             required:true,
         },
