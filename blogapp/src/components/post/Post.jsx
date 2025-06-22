@@ -1,27 +1,29 @@
 import "./post.css"
-import myImage from "../../assets/1.jpg"
+import {Link} from "react-router-dom";
 
-export const Post = () => {
+export const Post = ({post}) => {
   return (
     <div className="post">
-       <img src={myImage} alt="" className="postImg" />
+      {post.photo && (
+         <img src={post.photo} alt="" className="postImg" />
+      )}
 
        <div className="postInfo">
         <div className="postCats">
-            <span className="postCat">Music</span>
-            <span className="postCat">Life</span>
+            {post.categories.map((c) =>(
+             <span className="postCat">{c.name}</span>
+             ))}
         </div>
-        <span className="postTitle">
-            Lorem ipsum dolor sit amet 
-        </span>
+        <Link to={`/post/${post._id}`} className="link">
+          <span className="postTitle">
+              {post.title}
+          </span>
+        </Link>
         <hr />
-        <span className="postDate">1 hour ago</span>
+        <span className="postDate">{new Date(post.createdAt).toDateString()}</span>
        </div>
        <p className="postDesc">
-        Lorem ipsum, dolor sit amet consectetur adipisicing elit. Quod velit delectus praesentium ratione minus est ea aperiam natus quibusdam officia at odit veritatis quas quidem error, maxime quae voluptatum dolores.
-        Lorem ipsum, dolor sit amet consectetur adipisicing elit. Quod velit delectus praesentium ratione minus est ea aperiam natus quibusdam officia at odit veritatis quas quidem error, maxime quae voluptatum dolores.
-        Lorem ipsum, dolor sit amet consectetur adipisicing elit. Quod velit delectus praesentium ratione minus est ea aperiam natus quibusdam officia at odit veritatis quas quidem error, maxime quae voluptatum dolores.
-
+        {post.desc}
        </p>
     </div>
   )
