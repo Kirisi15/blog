@@ -1,13 +1,17 @@
 import "./singlePost.css"; 
 import { useLocation } from "react-router-dom";
 import axios from "axios";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useContext } from "react";
 import { Link } from "react-router-dom";
+import {Context } from "../../context/Context"
+
 
 export const SinglePost = () => {
     const location = useLocation();
     const path = location.pathname.split("/")[2];
     const [post, setPost] = useState({});
+     const PF = "http://localhost:5000/images/";
+     const { user } = useContext(Context);
 
     useEffect(() =>{
         const getPost = async () => {
@@ -16,18 +20,33 @@ export const SinglePost = () => {
         };
         getPost();
     },[path])
+    const handleDelete = async () => {
+        try{
+            await axios.delete(`/posts/${post._id}`, {
+            data: { username: user.username },
+        });
+
+            window.location.replace("/");
+        } catch(err){
+
+        }
+    };
+      
+
   return (
     <div className="singlePost">
             <div className="singlePostWrapper">
             {post.photo &&
-            <img src={post.photo} alt="" className="singlePostImg" />
+            <img src={PF + post.photo} alt="" className="singlePostImg" />
             }
             <h1 className="singlePostTitle">
                 {post.title}
-                <div className="singlePostEdit">
-                    <i className="singlePostIcon fa-solid fa-pen-to-square"></i>
-                    <i className="singlePostIcon fa-solid fa-trash"></i>
-                </div>
+                {post.username === user?.username && (
+                    <div className="singlePostEdit">
+                        <i className="singlePostIcon fa-solid fa-pen-to-square"></i>
+                        <i className="singlePostIcon fa-solid fa-trash" onClick={handleDelete}></i>
+                    </div>
+                )}
             </h1>
             <div className="singlePostInfo">
                 <span className="singlePostAuthor">
